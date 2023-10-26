@@ -1,9 +1,89 @@
+// const { isBlockLevelDetail } = require("./stretchtext");
+
 const run = () => {
   const TITLE_WHEN_CLOSED = "Expand";
   const TITLE_WHEN_OPEN = "OPEN";
 
   const requestAnimationFrame = getAnimationFrame();
+
+  const toggleSummary = (evt) => {
+    // Prevent the text from being selected if rapidly clicked.
+    evt.preventDefault();
+
+    const summary = evt.target;
+    const detail = findDetailFor(summary);
+
+    if (!detail) {
+      return;
+    }
+
+  // CSS Transitions don't work as expected on things set to 'display: none'. Make the
+  // stretch details visible if needed, then use a timeout for the transition to take
+  // effect.
+  if (summary.classList.contains('stretchtext-open')){
+    detail.style.display = 'none';
+  } else {
+    detail.style.display = isBlockLevelDetail(summary) ? 'block' : 'inline';
+  }
+
+    requestAnimationFrame(() => {
+    summary.classList.toggle('stretchtext-open');
+    detail.classList.toggle('stretchtext-open');
+
+    if (summary.classList.contains('stretchtext-open')){
+      setTitle(summary, TITLE_WHEN_OPEN);
+    } else {
+      setTitle(summary, TITLE_WHEN_CLOSED);
+    }
+  });
+}
+  const loadedCalled = false;
+
+  const loaded = () => {
+    if (loadedCalled) {
+      return;
+    }
+    const summaries = getSummaries();
+
+    summaries.forEach((summary) => {
+      summary.setAttribute("title", TITLE_WHEN_CLOSED);
+
+      summary.addEventListener("mousedown", toggleSummary);
+      summary.addEventListener("touchstart", toggleSummary);
+
+      summary.addEventListener("click", (e) => {
+        e.preventDefault();
+      });
+    });
+  };
+
+  window.addEventListener("DOMContentLoaded", loaded);
+  if (document.readyState == "complete") {
+    loaded();
+  }
 };
+
+
+const findDetailFor = (summary) => {
+  if (isBlockLevelDetail(summary)) {
+    const id = summary.getAttribute('href').replace(/^#/, '');
+    const detail = document.getElementById(id);
+    if (!detail && window.console) {
+      console.error(`No StretchText details for element with ID: ${id}`);
+    }
+    return detail;
+  } else {
+    const detail = summary.nextElementSibling;
+    if (!detail && window.console) {
+      console.error(`No StretchText details element found for ${summary}`);
+    }
+    return detail;
+  }
+}
+
+const isBlockLevelDetail = (summary) => {
+  return summary.nodeName.toLowerCase() === 'a';
+}
 
 /**
  * A custom implementation of requestAnimationFrame using setTimeout.
@@ -69,4 +149,21 @@ const getSummaries = () => {
 
   return results;
 };
+
+/**
+ * Set the title attribute of an element if it doesn't already have one.
+ *
+ * This function checks if the specified element already has a 'title' attribute. If it does,
+ * it does nothing. If not, it sets the 'title' attribute to the provided newTitle.
+ *
+ * @param {Element} summary - The element for which to set the 'title' attribute.
+ * @param {string} newTitle - The new title to be set if the 'title' attribute is absent.
+ */
+const setTitle = (summary, newTitle) => {
+  if(summary.hasAttribute('title')) {
+    return;
+  } else {
+    summary.setAttribute('title', newTitle);
+  }
+}
 run();
