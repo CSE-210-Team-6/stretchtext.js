@@ -118,3 +118,5 @@
 		loaded();
 	}
 })();
+
+module.exports = { isBlockLevelDetail };
