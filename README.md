@@ -1,0 +1,1 @@
+# stretchtext.js
