@@ -1,5 +1,3 @@
-// const { isBlockLevelDetail } = require("./stretchtext");
-
 const run = () => {
     const TITLE_WHEN_CLOSED = "EXPAND";
     const TITLE_WHEN_OPEN = "OPEN";
