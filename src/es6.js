@@ -35,7 +35,7 @@ const run = () => {
     } else {
       setTitle(summary, TITLE_WHEN_CLOSED);
     }
-  });
+    });
 }
   const loadedCalled = false;
 
@@ -167,3 +167,7 @@ const setTitle = (summary, newTitle) => {
   }
 }
 run();
+
+module.exports = { 
+  setTitle
+};
