@@ -1,89 +1,92 @@
 // const { isBlockLevelDetail } = require("./stretchtext");
 
 const run = () => {
-  const TITLE_WHEN_CLOSED = "Expand";
-  const TITLE_WHEN_OPEN = "OPEN";
+    const TITLE_WHEN_CLOSED = "EXPAND";
+    const TITLE_WHEN_OPEN = "OPEN";
 
-  const requestAnimationFrame = getAnimationFrame();
+    const requestAnimationFrame = getAnimationFrame();
 
-  const toggleSummary = (evt) => {
-    // Prevent the text from being selected if rapidly clicked.
-    evt.preventDefault();
+    const toggleSummary = (evt) => {
+        // Prevent the text from being selected if rapidly clicked.
+        evt.preventDefault();
 
-    const summary = evt.target;
-    const detail = findDetailFor(summary);
+        const summary = evt.target;
+        const detail = findDetailFor(summary);
 
-    if (!detail) {
-      return;
+        if (!detail) {
+            return;
+        }
+
+        // CSS Transitions don't work as expected on things set to 'display: none'. Make the
+        // stretch details visible if needed, then use a timeout for the transition to take
+        // effect.
+        if (summary.classList.contains("stretchtext-open")) {
+            detail.style.display = "none";
+        } else {
+            detail.style.display = isBlockLevelDetail(summary)
+                ? "block"
+                : "inline";
+        }
+
+        requestAnimationFrame(() => {
+            summary.classList.toggle("stretchtext-open");
+            detail.classList.toggle("stretchtext-open");
+
+            if (summary.classList.contains("stretchtext-open")) {
+                setTitle(summary, TITLE_WHEN_OPEN);
+            } else {
+                setTitle(summary, TITLE_WHEN_CLOSED);
+            }
+        });
+    };
+    const isLoadedCalled = false;
+
+    const loaded = () => {
+        if (isLoadedCalled) {
+            return;
+        }
+        const summaries = getSummaries();
+
+        summaries.forEach((summary) => {
+            summary.setAttribute("title", TITLE_WHEN_CLOSED);
+
+            summary.addEventListener("mousedown", toggleSummary);
+            summary.addEventListener("touchstart", toggleSummary);
+
+            summary.addEventListener("click", (e) => {
+                e.preventDefault();
+            });
+        });
+    };
+
+    window.addEventListener("DOMContentLoaded", loaded);
+    if (document.readyState == "complete") {
+        loaded();
     }
-
-  // CSS Transitions don't work as expected on things set to 'display: none'. Make the
-  // stretch details visible if needed, then use a timeout for the transition to take
-  // effect.
-  if (summary.classList.contains('stretchtext-open')){
-    detail.style.display = 'none';
-  } else {
-    detail.style.display = isBlockLevelDetail(summary) ? 'block' : 'inline';
-  }
-
-    requestAnimationFrame(() => {
-    summary.classList.toggle('stretchtext-open');
-    detail.classList.toggle('stretchtext-open');
-
-    if (summary.classList.contains('stretchtext-open')){
-      setTitle(summary, TITLE_WHEN_OPEN);
-    } else {
-      setTitle(summary, TITLE_WHEN_CLOSED);
-    }
-  });
-}
-  const loadedCalled = false;
-
-  const loaded = () => {
-    if (loadedCalled) {
-      return;
-    }
-    const summaries = getSummaries();
-
-    summaries.forEach((summary) => {
-      summary.setAttribute("title", TITLE_WHEN_CLOSED);
-
-      summary.addEventListener("mousedown", toggleSummary);
-      summary.addEventListener("touchstart", toggleSummary);
-
-      summary.addEventListener("click", (e) => {
-        e.preventDefault();
-      });
-    });
-  };
-
-  window.addEventListener("DOMContentLoaded", loaded);
-  if (document.readyState == "complete") {
-    loaded();
-  }
 };
 
-
 const findDetailFor = (summary) => {
-  if (isBlockLevelDetail(summary)) {
-    const id = summary.getAttribute('href').replace(/^#/, '');
-    const detail = document.getElementById(id);
-    if (!detail && window.console) {
-      console.error(`No StretchText details for element with ID: ${id}`);
+    if (isBlockLevelDetail(summary)) {
+        const id = summary.getAttribute("href").replace(/^#/, "");
+        const detail = document.getElementById(id);
+        if (!detail && window.console) {
+            console.error(`No StretchText details for element with ID: ${id}`);
+        }
+        return detail;
+    } else {
+        const detail = summary.nextElementSibling;
+        if (!detail && window.console) {
+            console.error(
+                `No StretchText details element found for ${summary}`
+            );
+        }
+        return detail;
     }
-    return detail;
-  } else {
-    const detail = summary.nextElementSibling;
-    if (!detail && window.console) {
-      console.error(`No StretchText details element found for ${summary}`);
-    }
-    return detail;
-  }
-}
+};
 
 const isBlockLevelDetail = (summary) => {
-  return summary.nodeName.toLowerCase() === 'a';
-}
+    return summary.nodeName.toLowerCase() === "a";
+};
 
 /**
  * A custom implementation of requestAnimationFrame using setTimeout.
@@ -92,7 +95,7 @@ const isBlockLevelDetail = (summary) => {
  * @returns {number} - A timeout identifier for the scheduled callback.
  */
 const customAnimationFrame = (callback) => {
-  return window.setTimeout(callback, 1000 / 60);
+    return window.setTimeout(callback, 1000 / 60);
 };
 
 /**
@@ -106,23 +109,23 @@ const customAnimationFrame = (callback) => {
  * @returns {number} - A requestAnimationFrame identifier or a timeout identifier if the native function is not available.
  */
 const getAnimationFrame = () => {
-  const vendors = [
-    "requestAnimationFrame",
-    "webkitRequestAnimationFrame",
-    "mozRequestAnimationFrame",
-    "oRequestAnimationFrame",
-    "msRequestAnimationFrame",
-  ];
+    const vendors = [
+        "requestAnimationFrame",
+        "webkitRequestAnimationFrame",
+        "mozRequestAnimationFrame",
+        "oRequestAnimationFrame",
+        "msRequestAnimationFrame",
+    ];
 
-  for (const vendor of vendors) {
-    if (window[vendor]) {
-      // Return the first available vendor-specific or native requestAnimationFrame
-      return window[vendor];
+    for (const vendor of vendors) {
+        if (window[vendor]) {
+            // Return the first available vendor-specific or native requestAnimationFrame
+            return window[vendor];
+        }
     }
-  }
 
-  // If no vendor-specific or native function is found, fall back to customAnimationFrame
-  return customAnimationFrame;
+    // If no vendor-specific or native function is found, fall back to customAnimationFrame
+    return customAnimationFrame;
 };
 
 /**
@@ -135,19 +138,19 @@ const getAnimationFrame = () => {
  * @returns {Array<Element>} An array of summary elements that meet the criteria.
  */
 const getSummaries = () => {
-  const results = [];
+    const results = [];
 
-  // epub-type
-  const summariesEpub = document.querySelectorAll(
-    '[epub-type="stretchsummary"]'
-  );
-  results.push(...summariesEpub);
+    // epub-type
+    const summariesEpub = document.querySelectorAll(
+        '[epub-type="stretchsummary"]'
+    );
+    results.push(...summariesEpub);
 
-  // CSS class.
-  const summariesClass = document.getElementsByClassName("stretchsummary");
-  results.push(...summariesClass);
+    // CSS class.
+    const summariesClass = document.getElementsByClassName("stretchsummary");
+    results.push(...summariesClass);
 
-  return results;
+    return results;
 };
 
 /**
@@ -160,10 +163,10 @@ const getSummaries = () => {
  * @param {string} newTitle - The new title to be set if the 'title' attribute is absent.
  */
 const setTitle = (summary, newTitle) => {
-  if(summary.hasAttribute('title')) {
-    return;
-  } else {
-    summary.setAttribute('title', newTitle);
-  }
-}
+    if (summary.hasAttribute("title")) {
+        return;
+    } else {
+        summary.setAttribute("title", newTitle);
+    }
+};
 run();
