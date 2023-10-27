@@ -170,5 +170,6 @@ const setTitle = (summary, newTitle) => {
 run();
 
 module.exports = { 
-  setTitle
+  setTitle,
+  isBlockLevelDetail
 };
