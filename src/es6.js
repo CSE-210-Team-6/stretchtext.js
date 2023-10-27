@@ -171,5 +171,6 @@ run();
 
 module.exports = { 
   setTitle,
-  isBlockLevelDetail
+  isBlockLevelDetail,
+  getSummaries
 };

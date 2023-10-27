@@ -1,4 +1,4 @@
-const { setTitle, isBlockLevelDetail } = require('../es6');
+const { setTitle, isBlockLevelDetail, getSummaries } = require('../es6');
 
 test('Check setting title for element that does not have title attribute', () => {
   document.body.innerHTML = '<p id="test"></p>';
@@ -38,4 +38,32 @@ test('Check that element is a block level detail', () => {
   const aTag = document.getElementById('stretch');
 
   expect(isBlockLevelDetail(aTag)).toBe(true);
+});
+
+test('Check that there are no summaries', () => {
+  document.body.innerHTML =
+    '<div>' +
+    ' <a id="stretch" href="#details">stretch</a>' +
+    ' <aside id="details"></aside>' +
+    '</div>';
+
+  const summaries = getSummaries();
+
+  expect(summaries.length).toBe(0);
+});
+
+test('Check that there are summaries', () => {
+  document.body.innerHTML = 
+    '<div>' +
+    ' <span id="stretchsummaryhtml" epub-type="stretchsummary">html</span>' +
+    ' <span id="stretchsummarycss" class="stretchsummary">css</span>'
+    '</div>';
+  
+  const htmlStretchSummary = document.getElementById("stretchsummaryhtml");
+  const cssStretchSummary = document.getElementById("stretchsummarycss");
+  const expectedSummaries = [htmlStretchSummary, cssStretchSummary];
+
+  const summaries = getSummaries();
+
+  expect(summaries).toEqual(expectedSummaries);
 });
