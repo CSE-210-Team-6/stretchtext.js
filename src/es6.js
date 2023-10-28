@@ -169,8 +169,12 @@ const setTitle = (summary, newTitle) => {
 };
 run();
 
-module.exports = { 
+module.exports = {
   setTitle,
   isBlockLevelDetail,
-  getSummaries
+  getSummaries,
+  findDetailFor,
+  customAnimationFrame,
+  getAnimationFrame,
+  run
 };
