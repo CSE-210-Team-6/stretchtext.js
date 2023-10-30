@@ -3,7 +3,7 @@ stretchtext.js
 
 An implementation of StretchText for JavaScript, which makes it possible to show and hide nested information on web pages. For details, demos, and instructions on using the library [read this blog post](http://codinginparadise.org/ebooks/html/blog/stretchtext.html). The original repo can be seen here: [BradNeuberg/stretchtext.js](https://github.com/BradNeuberg/stretchtext.js)
 
-Our docs can be seen here
+Our docs can be seen here: [docs](https://cse210-team6-stretchtest.netlify.app/out/global)
 
 # Changelog
 
