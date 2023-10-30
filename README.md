@@ -1,12 +1,31 @@
 stretchtext.js
 ==============
 
-An implementation of StretchText for JavaScript, which makes it possible to show and hide nested information on web pages. For details, demos, and instructions on using the library [read this blog post](http://codinginparadise.org/ebooks/html/blog/stretchtext.html).
+An implementation of StretchText for JavaScript, which makes it possible to show and hide nested information on web pages. For details, demos, and instructions on using the library [read this blog post](http://codinginparadise.org/ebooks/html/blog/stretchtext.html). The original repo can be seen here: [BradNeuberg/stretchtext.js](https://github.com/BradNeuberg/stretchtext.js)
 
-# Installation
-Run `npm install`.
+Our docs can be seen here
 
-# Testing
-We used Jest, which is a JavaScript testing framework.
+# Changelog
+
+## Javascript
+
+The overarching goal was to convert the code from [ES5](https://www.w3schools.com/js/js_es5.asp) to [ES6](https://www.w3schools.com/js/js_es6.asp).
+
+For this, we majorly changed the following.
+
+1. Converted variable declations which used `var` or `let` to `const`.
+2. Using `arrow functions`.
+3. Using `forEach()` instead of `Array.prototype.forEach()` for iterating.
+4. Using `module.exports`
+5. All the functions were initially declared inside the IIFE function. We declared a majority of them in the global scope.
+
+
+## HTML
+
+## CSS
+
+## Testing
+
+We used Jest, which is a JavaScript testing framework. It requires `npm`.
 
 Run `jest` to run the tests.
