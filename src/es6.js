@@ -169,7 +169,7 @@ const setTitle = (summary, newTitle) => {
 };
 run();
 
-module.exports = {
+export default {
   setTitle,
   isBlockLevelDetail,
   getSummaries,
