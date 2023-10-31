@@ -10,3 +10,11 @@ Run `npm install`.
 We used Jest, which is a JavaScript testing framework.
 
 Run `jest` to run the tests.
+
+# Changes
+ 
+## CSS
+
+1) Changed all the color names to hsl which is more understandable to humans
+2) Removed duplicate transition declarations. Redundant with modern browsers
+3) Made the padding left and right into a single tag making the code concise and easy to read
