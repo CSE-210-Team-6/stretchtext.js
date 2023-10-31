@@ -21,7 +21,14 @@ For this, we majorly changed the following.
 
 
 ## HTML
-
+  
+The following are the changes made to HTML:  
+  
+1. Added lang attribute
+2. Changed user-scalable=no to initial-scale=1 to enable user to zoom (enhances accesibility)
+3. Added title tag, which is considered good practice.
+  
+  
 ## CSS
 
 ## Testing
